@@ -4,7 +4,7 @@ import { object, number, string, TypeOf } from "zod";
  * @openapi
  * components:
  *   schema:
- *     Product:
+ *     Company:
  *       type: object
  *       required:
  *        - title
@@ -41,30 +41,30 @@ const payload = {
 
 const params = {
   params: object({
-    productId: string({
-      required_error: "productId is required",
+    companyId: string({
+      required_error: "companyId is required",
     }),
   }),
 };
 
-export const createProductSchema = object({
+export const createCompanySchema = object({
   ...payload,
 });
 
-export const updateProductSchema = object({
+export const updateCompanySchema = object({
   ...payload,
   ...params,
 });
 
-export const deleteProductSchema = object({
+export const deleteCompanySchema = object({
   ...params,
 });
 
-export const getProductSchema = object({
+export const getCompanySchema = object({
   ...params,
 });
 
-export type CreateProductInput = TypeOf<typeof createProductSchema>;
-export type UpdateProductInput = TypeOf<typeof updateProductSchema>;
-export type ReadProductInput = TypeOf<typeof getProductSchema>;
-export type DeleteProductInput = TypeOf<typeof deleteProductSchema>;
+export type CreateCompanyInput = TypeOf<typeof createCompanySchema>;
+export type UpdateCompanyInput = TypeOf<typeof updateCompanySchema>;
+export type ReadCompanyInput = TypeOf<typeof getCompanySchema>;
+export type DeleteCompanyInput = TypeOf<typeof deleteCompanySchema>;

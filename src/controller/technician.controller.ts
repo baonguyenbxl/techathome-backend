@@ -29,10 +29,10 @@ export async function updateTechnicianHandler(
 ) {
   const userId = res.locals.user._id;
 
-  const TechnicianId = req.params.TechnicianId;
+  const technicianId = req.params.technicianId;
   const update = req.body;
 
-  const technician = await findTechnician({ TechnicianId });
+  const technician = await findTechnician({ technicianId });
 
   if (!technician) {
     return res.sendStatus(404);
@@ -53,8 +53,8 @@ export async function getTechnicianHandler(
   req: Request<UpdateTechnicianInput["params"]>,
   res: Response
 ) {
-  const TechnicianId = req.params.TechnicianId;
-  const technician = await findTechnician({ TechnicianId });
+  const technicianId = req.params.technicianId;
+  const technician = await findTechnician({ technicianId });
 
   if (!technician) {
     return res.sendStatus(404);
@@ -68,9 +68,9 @@ export async function deleteTechnicianHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-  const TechnicianId = req.params.TechnicianId;
+  const technicianId = req.params.technicianId;
 
-  const technician = await findTechnician({ TechnicianId });
+  const technician = await findTechnician({ technicianId });
 
   if (!technician) {
     return res.sendStatus(404);
@@ -80,7 +80,7 @@ export async function deleteTechnicianHandler(
     return res.sendStatus(403);
   }
 
-  await deleteTechnician({ TechnicianId });
+  await deleteTechnician({ technicianId });
 
   return res.sendStatus(200);
 }

@@ -1,41 +1,45 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
-import { UserDocument } from "./user.model";
-
+import { TechnicianDocument } from "./technician.model";
+import {LocationDocument} from  './location.model'
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
-export interface ProductInput {
-  user: UserDocument["_id"];
-  title: string;
-  description: string;
-  price: number;
-  image: string;
+export interface CompanyInput {
+  technician: TechnicianDocument[ "_id" ];
+  location: LocationDocument[ "_id" ];
+  name: string;
+  description?: string;
+  taxNb: string;
+  url: string;
+  image?: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface CompanyDocument extends CompanyInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const companySchema = new mongoose.Schema(
   {
-    productId: {
+    companyId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `company_${nanoid()}`,
     },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    image: [{ type: String, required: true }],
+    technician: { type: mongoose.Schema.Types.ObjectId, ref: "Technician" },
+    location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
+    name: { type: String, required: true },
+    description: { type: String, required: false },
+    taxNb: { type: String, required: true },
+    url: { type: String, required: true },
+    image: [{ type: String, required: false }],
   },
   {
     timestamps: true,
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const CompanyModel = mongoose.model<CompanyDocument>("Company", companySchema);
 
-export default ProductModel;
+export default CompanyModel;

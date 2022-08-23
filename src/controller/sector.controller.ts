@@ -29,10 +29,10 @@ export async function updateSectorHandler(
 ) {
   const userId = res.locals.user._id;
 
-  const SectorId = req.params.SectorId;
+  const sectorId = req.params.sectorId;
   const update = req.body;
 
-  const sector = await findSector({ SectorId });
+  const sector = await findSector({ sectorId });
 
   if (!sector) {
     return res.sendStatus(404);
@@ -42,7 +42,7 @@ export async function updateSectorHandler(
     return res.sendStatus(403);
   }
 
-  const updatedSector = await findAndUpdateSector({ SectorId }, update, {
+  const updatedSector = await findAndUpdateSector({ sectorId }, update, {
     new: true,
   });
 
@@ -53,8 +53,8 @@ export async function getSectorHandler(
   req: Request<UpdateSectorInput["params"]>,
   res: Response
 ) {
-  const SectorId = req.params.SectorId;
-  const sector = await findSector({ SectorId });
+  const sectorId = req.params.sectorId;
+  const sector = await findSector({ sectorId });
 
   if (!sector) {
     return res.sendStatus(404);
@@ -68,9 +68,9 @@ export async function deleteSectorHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
-  const SectorId = req.params.SectorId;
+  const sectorId = req.params.sectorId;
 
-  const sector = await findSector({ SectorId });
+  const sector = await findSector({ sectorId });
 
   if (!sector) {
     return res.sendStatus(404);
@@ -80,7 +80,7 @@ export async function deleteSectorHandler(
     return res.sendStatus(403);
   }
 
-  await deleteSector({ SectorId });
+  await deleteSector({ sectorId });
 
   return res.sendStatus(200);
 }
