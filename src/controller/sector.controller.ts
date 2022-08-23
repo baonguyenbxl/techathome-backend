@@ -1,86 +1,86 @@
 import { Request, Response } from "express";
 import {
-  CreateProductInput,
-  UpdateProductInput,
-} from "../schema/product.schema";
+  CreateSectorInput,
+  UpdateSectorInput,
+} from "../schema/sector.schema";
 import {
-  createProduct,
-  deleteProduct,
-  findAndUpdateProduct,
-  findProduct,
-} from "../service/product.service";
+  createSector,
+  deleteSector,
+  findAndUpdateSector,
+  findSector,
+} from "../service/sector.service";
 
-export async function createProductHandler(
-  req: Request<{}, {}, CreateProductInput["body"]>,
+export async function createSectorHandler(
+  req: Request<{}, {}, CreateSectorInput["body"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
   const body = req.body;
 
-  const product = await createProduct({ ...body, user: userId });
+  const sector = await createSector({ ...body, user: userId });
 
-  return res.send(product);
+  return res.send(sector);
 }
 
-export async function updateProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function updateSectorHandler(
+  req: Request<UpdateSectorInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
-  const productId = req.params.productId;
+  const SectorId = req.params.SectorId;
   const update = req.body;
 
-  const product = await findProduct({ productId });
+  const sector = await findSector({ SectorId });
 
-  if (!product) {
+  if (!sector) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(sector.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  const updatedProduct = await findAndUpdateProduct({ productId }, update, {
+  const updatedSector = await findAndUpdateSector({ SectorId }, update, {
     new: true,
   });
 
-  return res.send(updatedProduct);
+  return res.send(updatedSector);
 }
 
-export async function getProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function getSectorHandler(
+  req: Request<UpdateSectorInput["params"]>,
   res: Response
 ) {
-  const productId = req.params.productId;
-  const product = await findProduct({ productId });
+  const SectorId = req.params.SectorId;
+  const sector = await findSector({ SectorId });
 
-  if (!product) {
+  if (!sector) {
     return res.sendStatus(404);
   }
 
-  return res.send(product);
+  return res.send(sector);
 }
 
-export async function deleteProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function deleteSectorHandler(
+  req: Request<UpdateSectorInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
-  const productId = req.params.productId;
+  const SectorId = req.params.SectorId;
 
-  const product = await findProduct({ productId });
+  const sector = await findSector({ SectorId });
 
-  if (!product) {
+  if (!sector) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(sector.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  await deleteProduct({ productId });
+  await deleteSector({ SectorId });
 
   return res.sendStatus(200);
 }

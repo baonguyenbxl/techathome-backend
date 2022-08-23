@@ -1,86 +1,86 @@
 import { Request, Response } from "express";
 import {
-  CreateProductInput,
-  UpdateProductInput,
-} from "../schema/product.schema";
+  CreatePaymentInput,
+  UpdatePaymentInput,
+} from "../schema/payment.schema";
 import {
-  createProduct,
-  deleteProduct,
-  findAndUpdateProduct,
-  findProduct,
-} from "../service/product.service";
+  createPayment,
+  deletePayment,
+  findAndUpdatePayment,
+  findPayment,
+} from "../service/payment.service";
 
-export async function createProductHandler(
-  req: Request<{}, {}, CreateProductInput["body"]>,
+export async function createPaymentHandler(
+  req: Request<{}, {}, CreatePaymentInput["body"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
   const body = req.body;
 
-  const product = await createProduct({ ...body, user: userId });
+  const payment = await createPayment({ ...body, user: userId });
 
-  return res.send(product);
+  return res.send(payment);
 }
 
-export async function updateProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function updatePaymentHandler(
+  req: Request<UpdatePaymentInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
-  const productId = req.params.productId;
+  const paymentId = req.params.paymentId;
   const update = req.body;
 
-  const product = await findProduct({ productId });
+  const payment = await findPayment({ paymentId });
 
-  if (!product) {
+  if (!payment) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(payment.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  const updatedProduct = await findAndUpdateProduct({ productId }, update, {
+  const updatedPayment = await findAndUpdatePayment({ paymentId }, update, {
     new: true,
   });
 
-  return res.send(updatedProduct);
+  return res.send(updatedPayment);
 }
 
-export async function getProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function getPaymentHandler(
+  req: Request<UpdatePaymentInput["params"]>,
   res: Response
 ) {
-  const productId = req.params.productId;
-  const product = await findProduct({ productId });
+  const paymentId = req.params.paymentId;
+  const payment = await findPayment({ paymentId });
 
-  if (!product) {
+  if (!payment) {
     return res.sendStatus(404);
   }
 
-  return res.send(product);
+  return res.send(payment);
 }
 
-export async function deleteProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function deletePaymentHandler(
+  req: Request<UpdatePaymentInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
-  const productId = req.params.productId;
+  const paymentId = req.params.paymentId;
 
-  const product = await findProduct({ productId });
+  const payment = await findPayment({ paymentId });
 
-  if (!product) {
+  if (!payment) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(payment.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  await deleteProduct({ productId });
+  await deletePayment({ paymentId });
 
   return res.sendStatus(200);
 }

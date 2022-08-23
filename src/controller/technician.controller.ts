@@ -1,86 +1,86 @@
 import { Request, Response } from "express";
 import {
-  CreateProductInput,
-  UpdateProductInput,
-} from "../schema/product.schema";
+  CreateTechnicianInput,
+  UpdateTechnicianInput,
+} from "../schema/technician.schema";
 import {
-  createProduct,
-  deleteProduct,
-  findAndUpdateProduct,
-  findProduct,
-} from "../service/product.service";
+  createTechnician,
+  deleteTechnician,
+  findAndUpdateTechnician,
+  findTechnician,
+} from "../service/technician.service";
 
-export async function createProductHandler(
-  req: Request<{}, {}, CreateProductInput["body"]>,
+export async function createTechnicianHandler(
+  req: Request<{}, {}, CreateTechnicianInput["body"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
   const body = req.body;
 
-  const product = await createProduct({ ...body, user: userId });
+  const technician = await createTechnician({ ...body, user: userId });
 
-  return res.send(product);
+  return res.send(technician);
 }
 
-export async function updateProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function updateTechnicianHandler(
+  req: Request<UpdateTechnicianInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
 
-  const productId = req.params.productId;
+  const TechnicianId = req.params.TechnicianId;
   const update = req.body;
 
-  const product = await findProduct({ productId });
+  const technician = await findTechnician({ TechnicianId });
 
-  if (!product) {
+  if (!technician) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(technician.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  const updatedProduct = await findAndUpdateProduct({ productId }, update, {
+  const updatedTechnician = await findAndUpdateTechnician({ TechnicianId }, update, {
     new: true,
   });
 
-  return res.send(updatedProduct);
+  return res.send(updatedTechnician);
 }
 
-export async function getProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function getTechnicianHandler(
+  req: Request<UpdateTechnicianInput["params"]>,
   res: Response
 ) {
-  const productId = req.params.productId;
-  const product = await findProduct({ productId });
+  const TechnicianId = req.params.TechnicianId;
+  const technician = await findTechnician({ TechnicianId });
 
-  if (!product) {
+  if (!technician) {
     return res.sendStatus(404);
   }
 
-  return res.send(product);
+  return res.send(technician);
 }
 
-export async function deleteProductHandler(
-  req: Request<UpdateProductInput["params"]>,
+export async function deleteTechnicianHandler(
+  req: Request<UpdateTechnicianInput["params"]>,
   res: Response
 ) {
   const userId = res.locals.user._id;
-  const productId = req.params.productId;
+  const TechnicianId = req.params.TechnicianId;
 
-  const product = await findProduct({ productId });
+  const technician = await findTechnician({ TechnicianId });
 
-  if (!product) {
+  if (!technician) {
     return res.sendStatus(404);
   }
 
-  if (String(product.user) !== userId) {
+  if (String(technician.user) !== userId) {
     return res.sendStatus(403);
   }
 
-  await deleteProduct({ productId });
+  await deleteTechnician({ TechnicianId });
 
   return res.sendStatus(200);
 }
