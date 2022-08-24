@@ -4,7 +4,7 @@ import { UserDocument } from "./user.model";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
-export interface ProductInput {
+export interface TechnicianInput {
   user: UserDocument["_id"];
   title: string;
   description: string;
@@ -12,18 +12,18 @@ export interface ProductInput {
   image: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface TechnicianDocument extends TechnicianInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const technicianSchema = new mongoose.Schema(
   {
     productId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `technician_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     title: { type: String, required: true },
@@ -36,6 +36,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const TechnicianModel = mongoose.model<TechnicianDocument>("Technician", technicianSchema);
 
-export default ProductModel;
+export default TechnicianModel;

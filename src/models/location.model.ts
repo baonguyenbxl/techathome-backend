@@ -1,41 +1,54 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
 import { UserDocument } from "./user.model";
+import { TechnicianDocument } from "./technician.model"
+import { CompanyDocument } from "./company.model"; 
 
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
+const nanoid = customAlphabet( "abcdefghijklmnopqrstuvwxyz0123456789", 10 );
 
-export interface ProductInput {
-  user: UserDocument["_id"];
-  title: string;
-  description: string;
-  price: number;
-  image: string;
+export interface LocationInput {
+  user: UserDocument[ "_id" ];
+  company: CompanyDocument[ "_id" ]; 
+  technician: TechnicianDocument[ "_id" ];
+  latitude?: string;
+  longitude?: string;
+  street: string;
+  nb: string;
+  city: string;
+  zipcode: string;
+  district?: string;
+  country: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface LocationDocument extends LocationInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const locationSchema = new mongoose.Schema(
   {
-    productId: {
+    locationId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `location_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    image: [{ type: String, required: true }],
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+    technician: { type: mongoose.Schema.Types.ObjectId, ref: "Technician" },
+    street: { type: String, required: true },
+    nb: { type: String, required: true },
+    city: { type: String, required: true },
+    district: { type: String, required: false },
+    country: { type: String, required: true },
+    latitude: { type: String, required: false },
+    longitude: { type: String, required: false },
   },
   {
     timestamps: true,
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const LocationModel = mongoose.model<LocationDocument>("Location", locationSchema);
 
-export default ProductModel;
+export default LocationModel;

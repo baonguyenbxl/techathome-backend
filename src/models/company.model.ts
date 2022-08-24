@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
-import { TechnicianDocument } from "./technician.model";
 import {LocationDocument} from  './location.model'
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
 export interface CompanyInput {
-  technician: TechnicianDocument[ "_id" ];
   location: LocationDocument[ "_id" ];
   name: string;
   description?: string;
@@ -27,7 +25,6 @@ const companySchema = new mongoose.Schema(
       unique: true,
       default: () => `company_${nanoid()}`,
     },
-    technician: { type: mongoose.Schema.Types.ObjectId, ref: "Technician" },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
     name: { type: String, required: true },
     description: { type: String, required: false },

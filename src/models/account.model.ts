@@ -9,7 +9,6 @@ export interface AccountInput {
   balance: number;
   outcome: number;
   income: number;
-  image: string;
 }
 
 export interface AccountDocument extends AccountInput, mongoose.Document {
@@ -17,25 +16,24 @@ export interface AccountDocument extends AccountInput, mongoose.Document {
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const accountSchema = new mongoose.Schema(
   {
-    productId: {
+    accountId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `account_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    image: [{ type: String, required: true }],
+    balance: { type: Number, required: true },
+    outcome: { type: Number, required: true },
+    income: { type: Number, required: true }
   },
   {
     timestamps: true,
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const AccountModel = mongoose.model<AccountDocument>("Account", accountSchema);
 
-export default ProductModel;
+export default AccountModel;

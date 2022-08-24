@@ -4,7 +4,7 @@ import { UserDocument } from "./user.model";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
-export interface ProductInput {
+export interface PaymentInput {
   user: UserDocument["_id"];
   title: string;
   description: string;
@@ -12,12 +12,12 @@ export interface ProductInput {
   image: string;
 }
 
-export interface ProductDocument extends ProductInput, mongoose.Document {
+export interface PaymentDocument extends PaymentInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const productSchema = new mongoose.Schema(
+const paymentSchema = new mongoose.Schema(
   {
     productId: {
       type: String,
@@ -36,6 +36,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-const ProductModel = mongoose.model<ProductDocument>("Product", productSchema);
+const PaymentModel = mongoose.model<PaymentDocument>("Payment", paymentSchema);
 
-export default ProductModel;
+export default PaymentModel;
