@@ -1,15 +1,18 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
 import { UserDocument } from "./user.model";
-
+import { JobDocument} from  "./job.model"
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
+
 export interface PaymentInput {
-  user: UserDocument["_id"];
-  title: string;
-  description: string;
-  price: number;
-  image: string;
+  user: UserDocument[ "_id" ];
+  job: JobDocument[ "id" ];
+  amount: number;
+  state: string;
+  mode?: string;
+  details?: string;
+  tax?: number;
 }
 
 export interface PaymentDocument extends PaymentInput, mongoose.Document {
@@ -19,17 +22,19 @@ export interface PaymentDocument extends PaymentInput, mongoose.Document {
 
 const paymentSchema = new mongoose.Schema(
   {
-    productId: {
+    paymentId: {
       type: String,
       required: true,
       unique: true,
-      default: () => `product_${nanoid()}`,
+      default: () => `payment_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    image: [{ type: String, required: true }],
+    job: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
+    amount: { type: String, required: true },
+    state: { type: String, required: true },
+    mode: { type: Number, required: false },
+    details: { type: String, required: false },
+    details: { type: String, required: false },
   },
   {
     timestamps: true,
